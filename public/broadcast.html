@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Broadcaster</title>
+    <meta charset="UTF-8" />
+
+    <style>
+      html {
+        overflow: scroll;
+        height: 100%;
+      }
+
+      #video-grid {
+        display: grid;
+        max-height:100vh;
+        grid-template-columns: repeat(auto-fill, 150px);
+        grid-auto-rows: 150px;
+        margin:auto;
+      }
+
+      #myvideo {
+        width:100%;
+        max-height:100vh;
+        background-color: aliceblue;
+        object-fit: cover;
+      }
+
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: white;  
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Broadcast</h1>
+      <div class="row">
+        <div class="col-md" >
+          <video playsinline autoplay muted id="myvideo"></video>
+        </div>
+        <div class="col-md">
+          <div id="video-grid">
+        </div>
+      </div>
+    </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="broadcast.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
