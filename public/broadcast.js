@@ -1,5 +1,7 @@
+
 const peerConnections = {};
 var flag=1;
+var room;
 let mdstream={};
 const videoGrid = document.getElementById('video-grid')
 const config = {
@@ -7,13 +9,7 @@ const config = {
     { 
       "urls": "stun:stun.l.google.com:19302",
     },
-    {
-"urls": [
-"turn:13.250.13.83:3478?transport=udp"
-],
-"username": "YzYNCouZM1mhqhmseWk6",
-"credential": "YzYNCouZM1mhqhmseWk6"
-}
+    
   ]
 };
 
@@ -31,10 +27,12 @@ const constraints = {
 //get media from  camera
 async function asyncCall() {
 
+  room=prompt("Enter the room no")
+
  await navigator.mediaDevices
   .getUserMedia(constraints).
   then(
-  stream => (myvideo.srcObject = stream,socket.emit("broadcaster")),
+  stream => (myvideo.srcObject = stream,socket.emit("join",room)),
   err => console.log(err)
 );
   }
@@ -42,6 +40,7 @@ async function asyncCall() {
   asyncCall();
   //creating a rtc peer connection
   socket.on("watcher", id => {
+    debugger;
 
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
@@ -62,6 +61,10 @@ async function asyncCall() {
   };
 
 });
+
+socket.on('room_created', async () => {
+  console.log('Socket event callback: room_created')
+})
 
 
 socket.on("answer", (id, description) => {
@@ -84,6 +87,7 @@ socket.on("candidate", (id, candidate) => {
 });
 
 socket.on("disconnectPeer", id => {
+  debugger;
   console.log("diconnected");
   if(peerConnections[id]) 
   peerConnections[id].close();
@@ -99,6 +103,25 @@ socket.on("disconnectPeer", id => {
       }
   }
 });
+
+socket.on("disconnectme", id => {
+  debugger;
+  console.log("diconnected");
+  if(peerConnections[id]) 
+  peerConnections[id].close();
+  delete peerConnections[id];
+  debugger;
+  let video =document.getElementsByTagName('video')
+  for(i=0;i<video.length;i++)
+  {
+
+      if(video[i].srcObject.id==mdstream[id])
+      {
+        video[i].remove();
+      }
+  }
+});
+
 
 
 window.onunload = window.onbeforeunload = () => {

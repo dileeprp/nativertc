@@ -1,17 +1,12 @@
 let peerConnection;
 let flag=1;
+var room;
 const config = {
   iceServers: [
     {
       urls: ["stun:stun.l.google.com:19302"]
     } ,
-    {
-"urls": [
-"turn:13.250.13.83:3478?transport=udp"
-],
-"username": "YzYNCouZM1mhqhmseWk6",
-"credential": "YzYNCouZM1mhqhmseWk6"
-}
+    
   ]
 };
 
@@ -34,6 +29,8 @@ const constraints = {
 //get media from  camera
 
 async function asyncCall() {
+  room=prompt("Enter the room no")
+
   await  navigator.mediaDevices
   .getUserMedia(constraints).
   then(
@@ -43,6 +40,11 @@ async function asyncCall() {
 }
 
 asyncCall();
+
+socket.on('room_joined', async () => {
+  console.log('Socket event callback: room_joined')
+  socket.emit('watcher', room)
+})
 
 
 socket.on("offer", (id, description) => {
@@ -84,8 +86,11 @@ socket.on("candidate", (id, candidate) => {
 });
 
 socket.on("connect", () => {
-  console.log("Connected");
-  socket.emit("watcher");
+  
+    console.log("Connected new");
+  socket.emit("join",room);
+
+  
 });
 
 socket.on("broadcaster", () => {
@@ -98,9 +103,43 @@ socket.on("disconnectPeer", () => {
 
 window.onunload = window.onbeforeunload = () => {
 
+  socket.emit("disconnectp",room);
+
   socket.close();
 };
 
+socket.on("connect_error",(reason)=>{
+  console.log("Connection error");
+  socket.emit("disconnectp",room);
+});
+socket.on("disconnect",(reason)=>{
+  socket.emit("disconnectp",room);
+});
+
+socket.on('reconnect', (attemptNumber) => {
+  // ...
+  console.log("reconnect "+attemptNumber);
+});
+
+socket.on('reconnect_attempt', (attemptNumber) => {
+  // ...
+  console.log("reconnect attempt"+attemptNumber);
+});
+
+socket.on('reconnecting', (attemptNumber) => {
+  // ...
+  console.log("reconnecting"+attemptNumber);
+});
+
+socket.on('reconnect_error', (error) => {
+  // ...
+  console.log("reconnect erro"+error);
+});
+
+socket.on('reconnect_failed', () => {
+  // ...
+  console.log("reconnect failed");
+});
 function  enableAudio ( )  {
 
   if(mute==true){

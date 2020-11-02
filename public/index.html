@@ -32,7 +32,7 @@
        
        video{
           width: 100%;
-          height: 100;
+          height: 100%;
       }
       
     </style>
@@ -40,8 +40,9 @@
   <body>
     <h1>Receiver</h1>
     <div id="video-chat-container">
-      <video id="myvideo" autoplay muted></video>
+      
       <video id="remote-video" autoplay></video>
+      <video id="myvideo" autoplay muted></video>
     </div>
     <button id="enable-audio">Enable audio</button>
     <script src="/socket.io/socket.io.js"></script>
