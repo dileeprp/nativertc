@@ -9,7 +9,7 @@ const config = {
     
   ]
 };
-const socket = io.connect(window.location.origin);
+const socket = io.connect("https://testwebrtc123.herokuapp.com/");
 const video = document.getElementById("remote-video");
 const myvideo = document.getElementById("myvideo");
 const enableAudioButton = document.querySelector("#enable-audio");

@@ -14,7 +14,7 @@ const config = {
 };
 
 
-const socket = io.connect(window.location.origin);
+const socket = io.connect("https://testwebrtc123.herokuapp.com/");
 const myvideo = document.getElementById("myvideo");
 const video = document.querySelector("video");
 
