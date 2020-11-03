@@ -9,9 +9,6 @@ const config = {
     
   ]
 };
-const io = require('socket.io')(4000);
-
-
 const socket = io.connect(window.location.origin);
 const video = document.getElementById("remote-video");
 const myvideo = document.getElementById("myvideo");
