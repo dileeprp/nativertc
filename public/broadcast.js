@@ -14,7 +14,7 @@ const config = {
 };
 
 
-const socket = io.connect("nativertc3.vercel.app");
+const socket = io.connect(window.location.origin);
 const myvideo = document.getElementById("myvideo");
 const video = document.querySelector("video");
 
